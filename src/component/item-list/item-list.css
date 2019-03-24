@@ -1,0 +1,7 @@
+.item-list li:hover{
+    cursor: pointer;
+    background-color: #444;
+}
+.item-list{
+    margin-bottom: 2rem;
+}

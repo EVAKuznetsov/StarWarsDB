@@ -1,0 +1,6 @@
+.error-block{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    color: #f39c12;
+}

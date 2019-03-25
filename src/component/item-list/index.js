@@ -9,20 +9,23 @@ export default class ItemList extends Component{
         peopleList:null
     }
     componentDidMount(){
-        this.swapiService.getAllPeople()
+        const {getData} = this.props;
+        getData()
             .then(this.UpdatePeopleList)
     }
     UpdatePeopleList = (peopleList)=>{
         this.setState({peopleList})
     }
     onRenderItemList = (arr) =>{
-        return arr.map(({id,name})=>{
+        return arr.map((item)=>{
+            const {id}=item;
+            const label = this.props.onRenderItem(item);//в данной функции мы получаем Lable в зависимости от того, откуда вызывается данная компонента
             return(               
                     <li className="list-group-item"
                         key={id}
                         onClick = {()=>this.props.onPersonSelected(id)}
                     >
-                        {name}
+                        {label}
                     </li>
             )
         }) 

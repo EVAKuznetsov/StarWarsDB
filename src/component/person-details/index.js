@@ -2,7 +2,7 @@ import React,{Component} from 'react'
 import './person-details.css';
 import SwapiService from '../../services/swapi-service';
 import Spiner from '../spiner'
-
+import ErrorButton from '../error-button'
 
 export default class PersonDetails extends Component{
     swapiService = new SwapiService();
@@ -29,6 +29,7 @@ export default class PersonDetails extends Component{
         
     }
     render(){
+        
         if(!this.state.person){
             return(<span>Select a person</span>) 
         }
@@ -63,6 +64,7 @@ function ContentPersonDetails({person}){
                         <span>{eyeColor}</span>
                     </li>
                 </ul>
+                <ErrorButton />
             </div>
         </>
     )

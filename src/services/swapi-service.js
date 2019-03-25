@@ -11,32 +11,32 @@ export default class SwapiService {
         return await res.json();
     }
     //получаем промис со списком всех героев star-wars
-    async getAllPeople(){
+    getAllPeople=async()=>{
         const res = await this.getResource('/people/');
         return res.results.map((person)=>this._transformPerson(person));
     }
     //получаем промис с определённым персонажем
-    async getPerson(id){
+    getPerson=async(id)=>{
         const person = await this.getResource(`/people/${id}`);
         return this._transformPerson(person);
     }
     //получаем промис со списком всех планет star-wars
-    async getAllPlanets(){
+    getAllPlanets=async()=>{
         const res = await this.getResource('/planets/');
         return res.results.map((planet)=>this._transformPlanet(planet));       
     }
     //получаем промис с определённой планетой
-    async getPlanet(id){
+    getPlanet=async(id)=>{
         const planet = await this.getResource(`/planets/${id}`);
         return this._transformPlanet(planet);
     }
     //получаем промис со списком всех кораблей star-wars
-    async getAllStarships(){
+    getAllStarships=async()=>{
         const res = await this.getResource(`/starships/`);
         return res.results.map((starship)=>this._transformStarship(starship));
     }
     //получаем промис с определённым кораблём
-    async getStarship(id){
+    getStarship=async(id)=>{
         const starship = await this.getResource(`/starships/${id}`);
         return this._transformStarship(starship)
     }

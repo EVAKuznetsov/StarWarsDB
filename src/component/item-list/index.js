@@ -12,6 +12,7 @@ export default class ItemList extends Component{
         const {getData} = this.props;
         getData()
             .then(this.UpdatePeopleList)
+            .catch(this.props.onError)            
     }
     UpdatePeopleList = (peopleList)=>{
         this.setState({peopleList})
@@ -19,11 +20,11 @@ export default class ItemList extends Component{
     onRenderItemList = (arr) =>{
         return arr.map((item)=>{
             const {id}=item;
-            const label = this.props.onRenderItem(item);//в данной функции мы получаем Lable в зависимости от того, откуда вызывается данная компонента
+            const label = this.props.children(item);//в данной функции мы получаем Lable в зависимости от того, откуда вызывается данная компонента
             return(               
                     <li className="list-group-item"
                         key={id}
-                        onClick = {()=>this.props.onPersonSelected(id)}
+                        onClick = {()=>this.props.onItemSelected(id)}
                     >
                         {label}
                     </li>

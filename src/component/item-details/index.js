@@ -4,36 +4,37 @@ import SwapiService from '../../services/swapi-service';
 import Spiner from '../spiner'
 import ErrorButton from '../error-button'
 
-export default class PersonDetails extends Component{
+export default class ItemDetails extends Component{
     swapiService = new SwapiService();
     state={
-        person:null,
+        item:null,
         loading:false
     }
     componentDidUpdate(prevProps){
-        if(this.props.personId!==prevProps.personId){
+        if(this.props.itemId!==prevProps.itemId){
             this.setState({loading:true})
-            this.swapiService.getPerson(this.props.personId)
-                .then((person)=>this.getPerson(person,this.props.personId))
-                .catch(()=>{console.log('герой пока не выбран')})
+            this.getPerson(this.props.itemId)
         }
     }
-    getPerson = (person,id)=>{
-        this.swapiService.getPersonImg(id)
-            .then(img=>{
-                this.setState({
-                    person:{img,...person},
-                    loading:false
-                });
-            })
+    //Делаем функцию асинхронной через async/await чтобы записывать полученные из промисов ответы.
+    getPerson = async(id)=>{            
+        const item = await this.swapiService.getPerson(id)
+            .then((person)=>{return person})
+            .catch(()=>{console.log('герой пока не выбран')})
+        const img = await this.swapiService.getPersonImg(id)
+            .then(img=>{return img})
+        await this.setState({
+                item:{img,...item},
+                loading:false
+            });
         
     }
     render(){
         
-        if(!this.state.person){
+        if(!this.state.item){
             return(<span>Select a person</span>) 
         }
-        const content = this.state.loading?<Spiner />:<ContentPersonDetails person = {this.state.person}/>
+        const content = this.state.loading?<Spiner />:<ContentItemDetails item = {this.state.item}/>
             
         return(
             <div className="person-details card">
@@ -43,8 +44,8 @@ export default class PersonDetails extends Component{
     }
 }
 
-function ContentPersonDetails({person}){
-    const {name,gender,birthDay,eyeColor,img} = person; 
+function ContentItemDetails({item}){
+    const {name,gender,birthYear,eyeColor,img} = item; 
     return(
         <>
             <img src={img} alt="" className="person-img" />
@@ -57,7 +58,7 @@ function ContentPersonDetails({person}){
                     </li>
                     <li className="list-group-item">
                         <span className="term">Birth Year</span>
-                        <span>{birthDay}</span>
+                        <span>{birthYear}</span>
                     </li>
                     <li className="list-group-item">
                         <span className="term">Eye Clolor</span>

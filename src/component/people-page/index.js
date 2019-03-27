@@ -1,9 +1,10 @@
 import React,{Component} from 'react'
 import './people-page.css'
 import ItemList from '../item-list'
-import PersonDetails from '../person-details'
+import ItemDetails from '../item-details'
 import ErrorIndicator from '../error-indicator'
 import SwapiService from '../../services/swapi-service'
+import ErrorBoundry from '../error-boundry'
 
 export default class PeoplePage extends Component{
     swapiService=new SwapiService();
@@ -12,12 +13,15 @@ export default class PeoplePage extends Component{
         hasError:false
     }
 
-    onPersonSelected = (id)=> {
+    onItemSelected = (id)=> {
         this.setState({
             selectedPerson:id
         })
     }
     componentDidCatch(){
+        this.onError();
+    }
+    onError = () =>{
         this.setState({hasError:true})
     }
     render(){
@@ -28,19 +32,35 @@ export default class PeoplePage extends Component{
                 </div>   
             )
         }
+        const itemlist = ( <ItemList 
+                                onItemSelected={this.onItemSelected}
+                                getData = {this.swapiService.getAllPeople}//Передаём функцию получения данных в общий компонент ItemList
+                                >
+                            {(i)=>(`${i.name} / ${i.birthYear}`)}
+                            </ItemList>
+
+                            )
+                            
+        const itemdetails = (<ItemDetails itemId={this.state.selectedPerson} />)
         return(
-            <div className="row">
-                <div className="col-md-6">
-                    <ItemList 
-                        onPersonSelected={this.onPersonSelected}
-                        getData = {this.swapiService.getAllPeople}//Передаём функцию получения данных в общий компонент ItemList
-                        onRenderItem = {({name,gender})=>{return `${name} / ${gender}`}}//Передаём функцию для вывода данных
-                     />
-                </div>
-                <div className="col-md-6">
-                    <PersonDetails personId={this.state.selectedPerson} />
-                </div>
-            </div>
+            <>
+            <ErrorBoundry>
+                <Row left = {itemlist} right = {itemdetails} />  
+                <Row left={<h3>Left</h3>} right = {<h3>Right</h3>}/>
+            </ErrorBoundry> 
+            </>         
         )
     }    
 }
+
+function Row ({left,right}){
+    return(
+    <div className="row">
+        <div className="col-md-6">
+            {left}
+        </div>
+        <div className="col-md-6">
+            {right}
+        </div>
+    </div>
+)}

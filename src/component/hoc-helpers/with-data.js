@@ -1,6 +1,7 @@
+//Компонента высшего порядка с логикой для вывода блока со списком данных
+
 import React,{Component} from 'react'
 import Spiner from '../spiner'
-import ErrorIndicator from '../error-indicator'
 
 const widthData=(View, getData)=>{
     return class extends Component{

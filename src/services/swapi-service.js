@@ -93,15 +93,15 @@ export default class SwapiService {
         }
         //return 'https://t2.genius.com/unsafe/220x220/https%3A%2F%2Fimages.genius.com%2F9b7173f3cdc117fca1cdcb608e5162a6.600x600x1.jpg';
     }
-    async getPlanetImg(id){
+     getPlanetImg=async(id)=>{
         const res = await this.getResourceImg(`/planets/${id}.jpg`);
         return res;
     }
-    async getPersonImg(id){
+    getPersonImg=async(id)=>{
         const res = await this.getResourceImg(`/characters/${id}.jpg`);
         return res;
     }
-    async getStarshipImg(id){
+    getStarshipImg=async(id)=>{
         const res = await this.getResourceImg(`/starships/${id}.jpg`);
         return res;
     }

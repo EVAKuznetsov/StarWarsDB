@@ -10,7 +10,11 @@ export default class extends Component{
     }
     render(){
         if(this.state.hasError){
-            return(<ErrorIndicator />)
+            return(
+                <div className="col-12 jumbotron">
+                    <ErrorIndicator />
+                </div> 
+            )
         }
         return(this.props.children)
     }

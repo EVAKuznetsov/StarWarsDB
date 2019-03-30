@@ -1,64 +1,86 @@
 import React,{Component} from 'react'
 import './people-page.css'
-import ItemDetails, {Record} from '../item-details'
+import {Record} from '../item-details'
 import ErrorIndicator from '../error-indicator'
-import SwapiService from '../../services/swapi-service'
 import ErrorBoundry from '../error-boundry'
-import { PersonList, StarshipList, PlanetList } from '../sw-component';
-import ItemList from '../item-list';
+import { PersonList, StarshipList, PlanetList, PersonDetails, PlanetDetails, StarshipDetails } from '../sw-component';
 
 export default class PeoplePage extends Component{
-    swapiService=new SwapiService();
     state = {
         selectedPerson:null,
-        hasError:false
+        selectedPlanet:null,
+        selectedStarship:null
+
     }
 
-    onItemSelected = (id)=> {
+    onPersonSelected = (id)=> {
         this.setState({
             selectedPerson:id
         })
     }
-    componentDidCatch(){
-        this.onError();
+    onPlanetSelected = (id)=> {
+        this.setState({
+            selectedPlanet:id
+        })
     }
-    onError = () =>{
-        this.setState({hasError:true})
+    onStarshipSelected = (id)=> {
+        this.setState({
+            selectedStarship:id
+        })
     }
     render(){
-        if(this.state.hasError){
-            return (
-                <div className="col-12 jumbotron">
-                    <ErrorIndicator />
-                </div>   
-            )
-        }
-        const itemlist = ( 
-                        <>
-                        <PersonList onItemSelected={this.onItemSelected}>
+        const peoplelist = (
+                        <PersonList onItemSelected={this.onPersonSelected}>
                             {(i)=>(`${i.name} / ${i.birthYear}`)}
-                        </PersonList>
-                        <StarshipList onItemSelected={this.onItemSelected}>
-                        {(i)=>(`${i.name}`)}
-                        </StarshipList>
-                        <PlanetList onItemSelected={this.onItemSelected}>
-                        {(i)=>(`${i.name} / ${i.population}`)}
-                        </PlanetList>
-                        </>
+                        </PersonList>                        
                         )
                             
-        const itemdetails = (
-                            <ItemDetails itemId={this.state.selectedPerson}>
-                                <Record label = 'Eye color' field = 'eyeColor' />
-                                <Record label = 'Gender' field = 'gender' />
-                                <Record label = 'Birth year' field = 'birthYear' />
-                            </ItemDetails>
+        const peopledetails = (
+                        <PersonDetails itemId={this.state.selectedPerson}>
+                            <Record label = 'Eye color' field = 'eyeColor' />
+                            <Record label = 'Gender' field = 'gender' />
+                            <Record label = 'Birth year' field = 'birthYear' />
+                        </PersonDetails>
                             )
+        const planetlist = ( 
+                            <PlanetList onItemSelected={this.onPlanetSelected}>
+                            {(i)=>(`${i.name} / ${i.population}`)}
+                            </PlanetList>
+                            )
+                            
+        const planetdetails = (
+                        <PlanetDetails itemId={this.state.selectedPlanet}>
+                            <Record label = 'Population' field = 'population' />
+                            <Record label = 'Rotation Period' field = 'rotationPeriod' />
+                            <Record label = 'Diameter' field = 'diameter' />
+                        </PlanetDetails>
+                            
+                            )
+        const starshiplist = (                            
+                            <StarshipList onItemSelected={this.onStarshipSelected}>
+                            {(i)=>(`${i.name}`)}
+                            </StarshipList>
+                            )
+                                
+        const starshipdetails = (
+                            <StarshipDetails itemId={this.state.selectedStarship}>
+                                <Record label = 'Model' field = 'model' />
+                                <Record label = 'Manufacturer' field = 'manufacturer' />
+                                <Record label = 'Cost' field = 'costInCredits' />
+                                <Record label = 'Length' field = 'length' />
+                                <Record label = 'Passengers' field = 'passengers' />
+                            </StarshipDetails>
+                                )
         return(
             <>
             <ErrorBoundry>
-                <Row left = {itemlist} right = {itemdetails} />  
-                <Row left={<h3>Left</h3>} right = {<h3>Right</h3>}/>
+                <Row left = {peoplelist} right = {peopledetails} />
+            </ErrorBoundry> 
+            <ErrorBoundry>  
+                <Row left={planetlist} right = {planetdetails}/>
+            </ErrorBoundry> 
+            <ErrorBoundry>    
+                <Row left={starshiplist} right = {starshipdetails}/>
             </ErrorBoundry> 
             </>         
         )

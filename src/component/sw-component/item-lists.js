@@ -1,10 +1,13 @@
-import React from 'react'
 import withData from '../hoc-helpers/with-data'
 import ItemList from '../item-list'
 import SwapiService from '../../services/swapi-service'
 
 const swapiService = new SwapiService();
-const {getAllPeople,getAllPlanets,getAllStarships} = swapiService;
+const {
+    getAllPeople,
+    getAllPlanets,
+    getAllStarships
+} = swapiService;
 
 const PersonList = withData(ItemList,getAllPeople);
 

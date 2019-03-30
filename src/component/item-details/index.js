@@ -34,7 +34,7 @@ export default class ItemDetails extends Component{
         if(!this.state.item){
             return(<span>Select a person</span>) 
         }
-        const content = this.state.loading?<Spiner />:<ContentItemDetails item = {this.state.item}/>
+        const content = this.state.loading?<Spiner />:<ContentItemDetails item = {this.state.item} children  = {this.props.children}/>
             
         return(
             <div className="person-details card">
@@ -44,29 +44,31 @@ export default class ItemDetails extends Component{
     }
 }
 
-function ContentItemDetails({item}){
-    const {name,gender,birthYear,eyeColor,img} = item; 
+function ContentItemDetails({item,children}){
+    const {name,img} = item; 
+    const content  = React.Children.map(children,(record)=>{
+        return React.cloneElement(record,{item});
+    })
     return(
         <>
             <img src={img} alt="" className="person-img" />
             <div className="card-body">
                 <h4>{name}</h4>
                 <ul className="list-group list-group-flush">
-                    <li className="list-group-item">
-                        <span className="term">Gender</span>
-                        <span>{gender}</span>
-                    </li>
-                    <li className="list-group-item">
-                        <span className="term">Birth Year</span>
-                        <span>{birthYear}</span>
-                    </li>
-                    <li className="list-group-item">
-                        <span className="term">Eye Clolor</span>
-                        <span>{eyeColor}</span>
-                    </li>
+                    {content}
                 </ul>
                 <ErrorButton />
             </div>
         </>
     )
 }
+
+const Record =({item,field,label})=>{
+    return(
+        <li className="list-group-item">
+            <span className="term">{label}</span>
+            <span>{item[field]}</span>
+        </li>
+    )
+}
+export {Record};

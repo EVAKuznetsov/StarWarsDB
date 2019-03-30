@@ -81,12 +81,17 @@ export default class SwapiService {
     }
     //API запрос на картинку
     getResourceImg = async(url)=>{
-        const res = await fetch(`${this._apiBaseImg}${url}`);
-        if(!res.ok){
-            return 'https://t2.genius.com/unsafe/220x220/https%3A%2F%2Fimages.genius.com%2F9b7173f3cdc117fca1cdcb608e5162a6.600x600x1.jpg';
-            // throw new Error()
+        try{
+            const res = await fetch(`${this._apiBaseImg}${url}`);
+            if(!res.ok){
+                return 'https://t2.genius.com/unsafe/220x220/https%3A%2F%2Fimages.genius.com%2F9b7173f3cdc117fca1cdcb608e5162a6.600x600x1.jpg';
+            }
+            return res.url;
         }
-        return res.url;
+        catch{
+            return 'https://t2.genius.com/unsafe/220x220/https%3A%2F%2Fimages.genius.com%2F9b7173f3cdc117fca1cdcb608e5162a6.600x600x1.jpg'
+        }
+        //return 'https://t2.genius.com/unsafe/220x220/https%3A%2F%2Fimages.genius.com%2F9b7173f3cdc117fca1cdcb608e5162a6.600x600x1.jpg';
     }
     async getPlanetImg(id){
         const res = await this.getResourceImg(`/planets/${id}.jpg`);
@@ -94,6 +99,10 @@ export default class SwapiService {
     }
     async getPersonImg(id){
         const res = await this.getResourceImg(`/characters/${id}.jpg`);
+        return res;
+    }
+    async getStarshipImg(id){
+        const res = await this.getResourceImg(`/starships/${id}.jpg`);
         return res;
     }
 

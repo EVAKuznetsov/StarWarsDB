@@ -1,10 +1,11 @@
 import React,{Component} from 'react'
 import './people-page.css'
-import ItemList from '../item-list'
-import ItemDetails from '../item-details'
+import ItemDetails, {Record} from '../item-details'
 import ErrorIndicator from '../error-indicator'
 import SwapiService from '../../services/swapi-service'
 import ErrorBoundry from '../error-boundry'
+import { PersonList, StarshipList, PlanetList } from '../sw-component';
+import ItemList from '../item-list';
 
 export default class PeoplePage extends Component{
     swapiService=new SwapiService();
@@ -32,16 +33,27 @@ export default class PeoplePage extends Component{
                 </div>   
             )
         }
-        const itemlist = ( <ItemList 
-                                onItemSelected={this.onItemSelected}
-                                getData = {this.swapiService.getAllPeople}//Передаём функцию получения данных в общий компонент ItemList
-                                >
+        const itemlist = ( 
+                        <>
+                        <PersonList onItemSelected={this.onItemSelected}>
                             {(i)=>(`${i.name} / ${i.birthYear}`)}
-                            </ItemList>
-
-                            )
+                        </PersonList>
+                        <StarshipList onItemSelected={this.onItemSelected}>
+                        {(i)=>(`${i.name}`)}
+                        </StarshipList>
+                        <PlanetList onItemSelected={this.onItemSelected}>
+                        {(i)=>(`${i.name} / ${i.population}`)}
+                        </PlanetList>
+                        </>
+                        )
                             
-        const itemdetails = (<ItemDetails itemId={this.state.selectedPerson} />)
+        const itemdetails = (
+                            <ItemDetails itemId={this.state.selectedPerson}>
+                                <Record label = 'Eye color' field = 'eyeColor' />
+                                <Record label = 'Gender' field = 'gender' />
+                                <Record label = 'Birth year' field = 'birthYear' />
+                            </ItemDetails>
+                            )
         return(
             <>
             <ErrorBoundry>

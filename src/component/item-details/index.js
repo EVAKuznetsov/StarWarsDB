@@ -1,5 +1,5 @@
 import React from 'react'
-import './person-details.css';
+import './item-details.css';
 import ErrorButton from '../error-button'
 
 const ItemDetails=(props)=>{  
@@ -8,8 +8,8 @@ const ItemDetails=(props)=>{
         return React.cloneElement(record,{item}); 
     })        
     return(
-        <div className="person-details card">
-            <img src={item.img} alt="" className="person-img" />
+        <div className="item-details card">
+            <img src={item.img} alt="" className="item-img" />
             <div className="card-body">
                 <h4>{item.name}</h4>
                 <ul className="list-group list-group-flush">

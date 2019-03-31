@@ -1,22 +1,28 @@
 import withDetail from '../hoc-helpers/with-detail'
 import ItemDetails from '../item-details'
-import SwapiService from '../../services/swapi-service'
-
-const swapiService = new SwapiService();
-const {
-    getPerson,
-    getPlanet,
-    getStarship,
-    getPersonImg,
-    getPlanetImg,
-    getStarshipImg
-} = swapiService;
-
-const PersonDetails = withDetail(ItemDetails,getPerson,getPersonImg)
-
-const PlanetDetails = withDetail(ItemDetails,getPlanet,getPlanetImg)
-
-const StarshipDetails = withDetail(ItemDetails,getStarship,getStarshipImg)
+import withSwapiService from '../hoc-helpers/with-swapi-service'
+//объявляем функции для выборки данных по API bp swapiService
+const mapPersonMethodToProps = (swapiService)=>{
+    return{
+        getItem:swapiService.getPerson,
+        getItemImg:swapiService.getPersonImg
+    }
+}
+const mapPlanetMethodToProps = (swapiService)=>{
+    return{
+        getItem:swapiService.getPlanet,
+        getItemImg:swapiService.getPlanetImg
+    }
+}
+const mapStarshipMethodToProps = (swapiService)=>{
+    return{
+        getItem:swapiService.getStarship,
+        getItemImg:swapiService.getStarshipImg
+    }
+}
+const PersonDetails = withSwapiService(withDetail(ItemDetails),mapPersonMethodToProps)
+const PlanetDetails = withSwapiService(withDetail(ItemDetails),mapPlanetMethodToProps)
+const StarshipDetails = withSwapiService(withDetail(ItemDetails),mapStarshipMethodToProps)
 
 export {
     PersonDetails,

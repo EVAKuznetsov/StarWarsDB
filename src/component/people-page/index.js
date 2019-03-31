@@ -1,7 +1,6 @@
 import React,{Component} from 'react'
 import './people-page.css'
 import {Record} from '../item-details'
-import ErrorIndicator from '../error-indicator'
 import ErrorBoundry from '../error-boundry'
 import { PersonList, StarshipList, PlanetList, PersonDetails, PlanetDetails, StarshipDetails } from '../sw-component';
 
@@ -29,12 +28,7 @@ export default class PeoplePage extends Component{
         })
     }
     render(){
-        const peoplelist = (
-                        <PersonList onItemSelected={this.onPersonSelected}>
-                            {(i)=>(`${i.name} / ${i.birthYear}`)}
-                        </PersonList>                        
-                        )
-                            
+        const peoplelist = <PersonList onItemSelected={this.onPersonSelected} />                          
         const peopledetails = (
                         <PersonDetails itemId={this.state.selectedPerson}>
                             <Record label = 'Eye color' field = 'eyeColor' />
@@ -42,12 +36,7 @@ export default class PeoplePage extends Component{
                             <Record label = 'Birth year' field = 'birthYear' />
                         </PersonDetails>
                             )
-        const planetlist = ( 
-                            <PlanetList onItemSelected={this.onPlanetSelected}>
-                            {(i)=>(`${i.name} / ${i.population}`)}
-                            </PlanetList>
-                            )
-                            
+        const planetlist =<PlanetList onItemSelected={this.onPlanetSelected} />                            
         const planetdetails = (
                         <PlanetDetails itemId={this.state.selectedPlanet}>
                             <Record label = 'Population' field = 'population' />
@@ -56,12 +45,7 @@ export default class PeoplePage extends Component{
                         </PlanetDetails>
                             
                             )
-        const starshiplist = (                            
-                            <StarshipList onItemSelected={this.onStarshipSelected}>
-                            {(i)=>(`${i.name}`)}
-                            </StarshipList>
-                            )
-                                
+        const starshiplist = <StarshipList onItemSelected={this.onStarshipSelected} />                                
         const starshipdetails = (
                             <StarshipDetails itemId={this.state.selectedStarship}>
                                 <Record label = 'Model' field = 'model' />

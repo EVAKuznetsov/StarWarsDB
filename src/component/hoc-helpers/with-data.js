@@ -3,24 +3,32 @@
 import React,{Component} from 'react'
 import Spiner from '../spiner'
 
-const widthData=(View, getData)=>{
+const widthData=(View)=>{
     return class extends Component{
         state={
-            data:null
+            data:null,
+            loading:false
+        }
+        componentDidUpdate(prevProps){
+            if(prevProps.getData !== this.props.getData){
+                this.setState({loading:true})
+                this.UpdateData();
+            }
         }
         componentDidMount(){
-            getData()
-                .then(this.UpdateData)
-                .catch(this.props.onError)            
+            this.UpdateData();           
         }
-        UpdateData = (data)=>{
-            this.setState({data})
+        UpdateData = ()=>{
+            this.props.getData()
+            .then((data)=>{this.setState({data,loading:false})})
+            .catch(this.props.onError)            
         }
         render(){
-            const {data} = this.state;
-            if(!data){
+            const {data,loading} = this.state;
+            if(!data||loading){
                 return <Spiner />
             }
+            
             return <View {...this.props} data={data} />
         }
     }

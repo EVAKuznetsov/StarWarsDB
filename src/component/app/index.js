@@ -2,10 +2,9 @@ import React,{Component} from 'react'
 import './app.css';
 import Header from '../header';
 import RandomPlanet from '../random-planet';
-import PeoplePage from '../people-page';
-import ErrorButton from '../error-button'
 import {SwapiService,TestSwapiService} from '../../services'
 import { SwapiServiceContext } from '../swapi-service-context';
+import {PeoplePage,PlanetPage, StarshipPage} from '../pages'
 
 export default class App extends Component{
     swapiService = new SwapiService()
@@ -34,8 +33,9 @@ export default class App extends Component{
                     <Header onChangeService={this.onChangeService}/>
                     {randomPlanet}
                     <button className="btn btn-success btn-menu" onClick={this.handleClickPlanet}>toggle random planet</button>
-                    <ErrorButton />  
                     <PeoplePage /> 
+                    <PlanetPage />
+                    <StarshipPage />
                 </div>
             </SwapiServiceContext.Provider>
         )

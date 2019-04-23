@@ -1,17 +1,7 @@
-import React from 'react'
-import withData from '../hoc-helpers/with-data'
 import ItemList from '../item-list'
-import withSwapiService from '../hoc-helpers/with-swapi-service'
+import {withChildrenFunction,withSwapiService,withData, Compose} from '../hoc-helpers'
+//реализация частично применённых функций
 
-const withChildrenFunction = (Wrapper,fn)=>{
-    return(props)=>{
-        return(
-            <Wrapper {...props}>
-                {fn}
-            </Wrapper>
-        )
-    }
-}
 const renderName = (i)=>(`${i.name} / ${i.birthYear}`)
 const renderPlanet = (i)=>(`${i.name} / ${i.population}`)
 const renderStarship = (i)=>(`${i.name} / ${i.model}`)
@@ -27,13 +17,17 @@ const mapStarshipMethodToProps = (swapiService)=>{
 }
 
 //const PersonList = withData(ItemList,getAllPeople); //до композиции компонентов
-const PersonList = withSwapiService(withData(withChildrenFunction(ItemList,renderName)),mapPersonMethodToProps);
+const PersonList = Compose(
+        withSwapiService(mapPersonMethodToProps),
+        withData,
+        withChildrenFunction(renderName)
+    )(ItemList);
 
 //const PlanetList = withData(ItemList,getAllPlanets); //до композиции компонентов
-const PlanetList = withSwapiService(withData(withChildrenFunction(ItemList,renderPlanet)),mapPlanetMethodToProps);
+const PlanetList = Compose(withSwapiService(mapPlanetMethodToProps),withData,withChildrenFunction(renderPlanet))(ItemList);//композиция ( яйцо в сундуке, сундук в утке, утка в амбаре...)
 
 //const StarshipList = withData(ItemList,getAllStarships); //до композиции компонентов
-const StarshipList = withSwapiService(withData(withChildrenFunction(ItemList,renderStarship)),mapStarshipMethodToProps);
+const StarshipList = Compose(withSwapiService(mapStarshipMethodToProps),withData,withChildrenFunction(renderStarship))(ItemList);
 
 export {
     PersonList,

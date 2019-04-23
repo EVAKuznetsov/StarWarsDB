@@ -1,6 +1,5 @@
-import withDetail from '../hoc-helpers/with-detail'
+import {withDetail,withSwapiService} from '../hoc-helpers'
 import ItemDetails from '../item-details'
-import withSwapiService from '../hoc-helpers/with-swapi-service'
 //объявляем функции для выборки данных по API bp swapiService
 const mapPersonMethodToProps = (swapiService)=>{
     return{
@@ -20,9 +19,9 @@ const mapStarshipMethodToProps = (swapiService)=>{
         getItemImg:swapiService.getStarshipImg
     }
 }
-const PersonDetails = withSwapiService(withDetail(ItemDetails),mapPersonMethodToProps)
-const PlanetDetails = withSwapiService(withDetail(ItemDetails),mapPlanetMethodToProps)
-const StarshipDetails = withSwapiService(withDetail(ItemDetails),mapStarshipMethodToProps)
+const PersonDetails = withSwapiService(mapPersonMethodToProps)(withDetail(ItemDetails))
+const PlanetDetails = withSwapiService(mapPlanetMethodToProps)(withDetail(ItemDetails))
+const StarshipDetails = withSwapiService(mapStarshipMethodToProps)(withDetail(ItemDetails))
 
 export {
     PersonDetails,

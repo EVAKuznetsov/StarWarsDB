@@ -2,6 +2,7 @@ import React,{Component} from 'react'
 import './app.css';
 import Header from '../header';
 import RandomPlanet from '../random-planet';
+// import {RandomPlanetDetails} from '../sw-component';
 import {SwapiService,TestSwapiService} from '../../services'
 import { SwapiServiceContext } from '../swapi-service-context';
 import {PeoplePage,PlanetPage, StarshipPage} from '../pages'
@@ -26,7 +27,7 @@ export default class App extends Component{
     }
     
     render(){
-        const randomPlanet = this.state.showPlanet?  <RandomPlanet />:null;  
+        const randomPlanet = this.state.showPlanet?  <RandomPlanet swapiService = {this.state.swapiService}/>:null;  
         return(
             <SwapiServiceContext.Provider value={this.state.swapiService}>{/* ОБЯЗАТЕЛЬНО В КОНТЕКСТЕ ПЕРЕДАВАТЬ ИМЕННО value!!!!!!!!!!!!!!!!*/}
                 <div className="container">

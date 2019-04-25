@@ -1,48 +1,51 @@
 import React,{Component} from 'react';
 import './random-planet.css';
-import SwapiService from '../../services/swapi-service';
 import Spiner from '../spiner';
 import ErrorIndicator from '../error-indicator'
+import PropTypes from 'prop-types';
 
 export default class RandomPlanet extends Component{
-    swapiService = new SwapiService();
+    // эксперементальный синтаксис объявления props по умолчанию
+    static defaultProps = {
+        intervalUpdate:10000
+    }
+    static propTypes = {
+        intervalUpdate:PropTypes.number
+    }
     state = {
         planet:{},
         isLoading:true,
         error:false
     }
-    // constructor(){
-    //     super()
-    //     this.getRandomPlanet()
-    // }
+    componentDidUpdate(prevProps){        
+        if(prevProps.swapiService!==this.props.swapiService){
+            this.setState({isLoading:true});
+            this.getRandomPlanet();
+
+        }
+    }
     componentDidMount(){
+        const {intervalUpdate} = this.props; //props заданный по умолчанию
         this.getRandomPlanet();
-        this.timerRandomPlaner=setInterval(this.getRandomPlanet,7000);
+        this.timerRandomPlaner=setInterval(this.getRandomPlanet,intervalUpdate);
     }
     componentWillUnmount(){
         clearInterval(this.timerRandomPlaner);
     }
-    //Записываем данные о планете в state, предварительно получая картинку
-    onPlanetLoaded=(planet,id)=>{
-        //this.setState({planet})
-        this.swapiService.getPlanetImg(id)
-            .then((img)=>{
-                this.setState({
-                    planet:{img,...planet},
-                    isLoading:false,
-                    error:false
-                })            
-            })
-            // .catch((e)=>{console.log(this.error)})//отлавливает ошибку, если картинка не получена
-    }
-    //Из API получаем массив данных о планете
-    getRandomPlanet=()=>{
+    //воспользуемся async/await и зделаем функцию асинхронной чтобы выполнить промисы
+    getRandomPlanet= async()=>{
         const id = Math.floor(Math.random()*25+2);
-        // const id = 26;
-        //this.swapiService.getPlanet(id).then(this.onPlanetLoaded);// можно использовать стрелочную функцию в then "(planet)=>this.onPlanetLoaded(planet)" - тот же самый код, но читабельней
-        this.swapiService.getPlanet(id)
-            .then((planet)=>this.onPlanetLoaded(planet,id))
-            .catch(this.error)
+        // const id = 1;
+        const planet = await this.props.swapiService.getPlanet(id)
+            .then(planet=>{return planet})
+            .catch(this.error);
+        const img = await this.props.swapiService.getPlanetImg(id)
+            .then(img=>{return img});
+        await this.setState({
+            planet:{img,...planet},
+            isLoading:false,
+            error:false
+        })
     }
     error=(err)=>{
         this.setState({
@@ -50,7 +53,7 @@ export default class RandomPlanet extends Component{
             isLoading:false
         })
     }
-    render(){         
+    render(){      
         const {planet,isLoading,error}=this.state; 
         const hasData = !(error||isLoading);
         const errorMessage = error?<ErrorIndicator />:null;
@@ -66,6 +69,12 @@ export default class RandomPlanet extends Component{
         )
     }
 }
+
+// зоздание props по умолчанию,используется для неопределённых (undefined) пропсов, но не для пропсов со значением null
+// RandomPlanet.defaultProps = {
+//     intervalUpdate:10000
+// }
+
 
 const PlanetView = ({planet})=>{
     const{img,population,rotationPeriod,diameter,name}=planet;

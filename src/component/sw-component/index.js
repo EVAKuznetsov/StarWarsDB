@@ -1,7 +1,8 @@
 import {
     PersonDetails,
     PlanetDetails,
-    StarshipDetails
+    StarshipDetails,
+    RandomPlanetDetails
 } from './details';
 import {
     PersonList,
@@ -15,5 +16,6 @@ export {
     StarshipDetails,
     PersonList,
     PlanetList,
-    StarshipList
+    StarshipList,
+    RandomPlanetDetails
 };

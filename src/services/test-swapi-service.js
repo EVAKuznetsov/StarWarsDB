@@ -72,7 +72,7 @@ export default class TestSwapiService {
     }
     //получаем промис с определённым персонажем
     getPlanet=async(id)=>{
-        const planet = {...this.planet.filter(planet=>planet.id ===id)[0]};
+        const planet = {...this.planet.filter(planet=>planet.id ===String(id))[0]};
         return planet;
     }
     //получаем промис со списком всех планет star-wars

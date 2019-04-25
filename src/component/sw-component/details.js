@@ -1,5 +1,6 @@
 import {withDetail,withSwapiService} from '../hoc-helpers'
 import ItemDetails from '../item-details'
+import RandomPlanet from '../random-planet'
 //объявляем функции для выборки данных по API bp swapiService
 const mapPersonMethodToProps = (swapiService)=>{
     return{
@@ -22,9 +23,11 @@ const mapStarshipMethodToProps = (swapiService)=>{
 const PersonDetails = withSwapiService(mapPersonMethodToProps)(withDetail(ItemDetails))
 const PlanetDetails = withSwapiService(mapPlanetMethodToProps)(withDetail(ItemDetails))
 const StarshipDetails = withSwapiService(mapStarshipMethodToProps)(withDetail(ItemDetails))
+const RandomPlanetDetails = withSwapiService(mapPlanetMethodToProps)(RandomPlanet)
 
 export {
     PersonDetails,
     PlanetDetails,
-    StarshipDetails
+    StarshipDetails,
+    RandomPlanetDetails
 };

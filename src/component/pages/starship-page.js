@@ -1,35 +1,18 @@
-import React,{Component} from 'react'
-import {Record} from '../item-details'
+import React from 'react'
 import ErrorBoundry from '../error-boundry'
-import { StarshipList, StarshipDetails } from '../sw-component';
-import Row from '../row'
+import { StarshipList } from '../sw-component';
+import {withRouter} from 'react-router-dom'
 
-export default class PeoplePage extends Component{
-    state = {
-        selectedStarship:null
-    }
-    onStarshipSelected = (id)=> {
-        this.setState({
-            selectedStarship:id
-        })
-    }
-    render(){
-        const starshiplist = <StarshipList onItemSelected={this.onStarshipSelected} />                                
-        const starshipdetails = (
-                            <StarshipDetails itemId={this.state.selectedStarship}>
-                                <Record label = 'Model' field = 'model' />
-                                <Record label = 'Manufacturer' field = 'manufacturer' />
-                                <Record label = 'Cost' field = 'costInCredits' />
-                                <Record label = 'Length' field = 'length' />
-                                <Record label = 'Passengers' field = 'passengers' />
-                            </StarshipDetails>
-                                )
-        return(
-            <>
-            <ErrorBoundry>    
-                <Row left={starshiplist} right = {starshipdetails}/>
-            </ErrorBoundry> 
-            </>         
-        )
-    }    
-}
+// переданный параметр history принадлежит react-router-dom, используем, чтобы перейти на нужный нам адрес
+const StarshipPage=(props)=>{          
+    return(
+        <ErrorBoundry>    
+            <StarshipList onItemSelected={(itemId)=>{
+                // props.history.push(`/starships/${itemId}`) //так мы пишем, если у нас абсолютный путь /starship
+                props.history.push(itemId) //а так, если путь относительный  /starship/
+            }} />
+        </ErrorBoundry>     
+    )
+}    
+
+export default withRouter(StarshipPage) 

@@ -18,14 +18,26 @@ const withDetail=(View)=>{
                 this.setState({item:null})
             }
         }
+        componentDidMount(){
+            if(this.props.itemId){
+                this.setState({loading:true})
+                this.getItem(this.props.itemId)
+            }
+        }
         //Делаем функцию асинхронной через async/await чтобы записывать полученные из промисов ответы.
-        getItem = async(id)=>{            
+        getItem = async(id)=>{
+            //проверка на получение не пустого id
+            if(id){         
             const item = await this.props.getItem(id)
                 .then((item)=>{return item})
                 .catch(()=>{console.log(`Ошибка, не удалось получить элемент по id=${id}`)})
             const img = await this.props.getItemImg(id)
-                .then(img=>{return img})                
+                .then(img=>{return img})
             await this.updateItem({img,...item})
+            }else{
+                await this.updateItem(null) 
+            }
+
         }
         updateItem = (item)=>{
             this.setState({
@@ -35,6 +47,7 @@ const withDetail=(View)=>{
         }
         render(){
             const {item,loading} = this.state;
+            console.log(item);
             if (!item&&loading){
                 return <Spiner />
             }

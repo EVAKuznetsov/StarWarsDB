@@ -13,7 +13,7 @@ export default class PeoplePage extends Component{
             selectedStarship:id
         })
     }
-    render(){
+    render(){        
         const starshiplist = <StarshipList onItemSelected={this.onStarshipSelected} />                                
         const starshipdetails = (
                             <StarshipDetails itemId={this.state.selectedStarship}>

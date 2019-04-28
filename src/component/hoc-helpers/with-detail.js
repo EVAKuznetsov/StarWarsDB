@@ -18,6 +18,10 @@ const withDetail=(View)=>{
                 this.setState({item:null})
             }
         }
+        // componentDidMount(){
+        //     this.setState({loading:true})
+        //     this.getItem(this.props.itemId)
+        // }
         //Делаем функцию асинхронной через async/await чтобы записывать полученные из промисов ответы.
         getItem = async(id)=>{            
             const item = await this.props.getItem(id)

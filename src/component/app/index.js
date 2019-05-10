@@ -47,7 +47,7 @@ export default class App extends Component{
                         <Header onChangeService={this.onChangeService}/>
                         {randomPlanet}
                         <button className="btn btn-success btn-menu" onClick={this.handleClickPlanet}>toggle random planet</button>
-                        <Switch>
+                        <Switch>{/*нужен для того, чтобы срабатывал только однин внутренний route, как только один сработал, все остальные игнорируются*/}
                             <Route exact path="/" render={()=><h2>Welcome to StarDB</h2>} />
                             <Route path ="/people/:id?" component = {PeoplePage} />{/*/people/:id? такой синтаксис позволяет нам добавить опциональный параметр, тоесть компонента будет отрендерена как с id, так и без него */}
                             <Route exact path ="/planets" component = {PlanetPage} />
